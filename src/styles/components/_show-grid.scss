@@ -7,6 +7,7 @@
     grid-column-gap: 4rem;
     grid-row-gap: 3.2rem;
     grid-template-columns: repeat(auto-fit, 28rem);
+    justify-content: space-between; // added after
   }
 }
 
