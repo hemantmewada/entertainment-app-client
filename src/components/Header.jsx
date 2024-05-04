@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { Logo, Home, Bookmark, Movies, Tv } from "../assets";
+import { useSelector } from "react-redux";
+import auth from "../hooks/auth";
 
 // Header Component
 function Header() {
@@ -9,6 +11,12 @@ function Header() {
   const grayishColor = "#5a698f";
 
   const { pathname } = useLocation();
+  const token = useSelector((state) => state.token);
+  const { logout } = auth();
+  const navigate = useNavigate();
+  const login = () => {
+    navigate("/login");
+  };
   // JSX structure for rendering Header component
   return (
     <header className="header">
@@ -33,33 +41,45 @@ function Header() {
           />
         </Link>
       </nav>
-      {/* User section - Display different content based on user authentication */}
-      <div className="header__user" style={{ display: "none" }}>
-        {/* Logout button for authenticated users */}
-        <button className="btn" title="User">
-          <img
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-            alt="User"
-          />
-        </button>
+      {token ? (
+        <>
+          {/* User section - Display different content based on user authentication */}
+          <div className="header__user cursor-pointer" onClick={logout}>
+            {/* Logout button for authenticated users */}
+            <button className="btn" title="User">
+              <img
+                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                alt="User"
+                className="rounded-full"
+              />
+            </button>
 
-        {/* User information and logout option */}
-        <div className="header__user__tag">
-          <p>hemant</p>
-          <p>Logout</p>
-        </div>
-      </div>
-      <div className="header__user">
-        {/* Link to login page for non-authenticated users */}
-        <Link to="/login" aria-label="Login">
-          <img src="/image-avatar.png" alt="" />
-        </Link>
+            {/* User information and logout option */}
+            <div className="header__user__tag">
+              <p>Logout</p>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="header__user cursor-pointer" onClick={login}>
+            {/* Link to login page for non-authenticated users */}
+            {/* <Link to="/login" aria-label="Login"> */}
+            {/* <img src="/image-avatar.png" alt="" /> */}
+            <img
+              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+              alt="User"
+              className="rounded-full"
+            />
+            {/* </Link> */}
 
-        {/* Login prompt for non-authenticated users */}
-        <div className="header__user__tag">
-          <p>Login</p>
-        </div>
-      </div>
+            {/* Login prompt for non-authenticated users */}
+            <div className="header__user__tag">
+              <p>Login</p>
+            </div>
+          </div>
+        </>
+      )}
     </header>
   );
 }

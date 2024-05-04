@@ -1,31 +1,61 @@
 import React from "react";
 
-import {
-  Movies as Movie,
-  Tv,
-  Bookmark as BookmarkEmpty,
-  Play,
-} from "../assets";
+import { Movies as Movie, Tv, Play } from "../assets";
+import { CiBookmark as BookmarkEmpty } from "react-icons/ci";
+import { FaBookmark as BookmarkFull } from "react-icons/fa6";
 
 import { useNavigate } from "react-router-dom";
+import { dateFormat } from "../helpers/helpers";
+import tmdb from "../hooks/tmdb";
+import { useSelector } from "react-redux";
 
 // ShowCards Component
-function ShowCards() {
+function ShowCards({ data }) {
   const navigate = useNavigate();
-  const detail = () => {
-    navigate("/movie/123");
+  const bookmarks = useSelector((state) => state.bookmarks);
+  const detail = (id, type) => {
+    navigate(`/${type}/${id}`);
   };
-  const renderedCards = [...Array(10)].map((_, index) => {
+  const { addBookmark, removeBookmark } = tmdb();
+
+  const renderedCards = data?.map((data, index) => {
+    // console.log(data);
+    const isBookmarked = Boolean(
+      bookmarks?.find((bookmark) => bookmark.id == data.id)
+    );
+    const imgSrc = `https://www.themoviedb.org/t/p/w780${data.poster_path}`;
+    const title = data.media_type == "tv" ? data.name : data.title;
+    const fomattedDate =
+      data.media_type == "tv"
+        ? dateFormat(data.first_air_date)
+        : data.media_type == "movie"
+        ? dateFormat(data.release_date)
+        : "";
+
     return (
       <div className="card card--show" key={index}>
-        {/* Display full bookmark icon for bookmarked shows */}
-        {/* <button className="btn__bookmark btn__bookmark--show">
-          <BookmarkFull />
-        </button> */}
-        {/* Display empty bookmark icon for non-bookmarked shows */}
-        <button className="btn__bookmark btn__bookmark--show">
-          <BookmarkEmpty />
-        </button>
+        {isBookmarked ? (
+          <>
+            {/* Display full bookmark icon for bookmarked shows */}
+
+            <button
+              className="btn__bookmark btn__bookmark--show z-50"
+              onClick={() => removeBookmark(data.id)}
+            >
+              <BookmarkFull />
+            </button>
+          </>
+        ) : (
+          <>
+            {/* Display empty bookmark icon for non-bookmarked shows */}
+            <button
+              className="btn__bookmark btn__bookmark--show z-50"
+              onClick={() => addBookmark(data)}
+            >
+              <BookmarkEmpty size={20} />
+            </button>
+          </>
+        )}
 
         {/* Play button for the show */}
         <button className="btn btn--play">
@@ -34,23 +64,29 @@ function ShowCards() {
             <h4>Play</h4>
           </span>
           <img
-            src="https://cdn.pixabay.com/photo/2024/03/09/12/48/water-8622588_640.png"
-            alt="title of the image"
+            src={imgSrc}
+            alt={title}
+            className="object-cover duration-1000 hover:scale-110 z-10"
           />
         </button>
 
         {/* Show information section */}
-        <div className="card--show__info">
+        <div className="card--show__info z-40">
           <p className="font-small pt-4">
-            2024
+            {fomattedDate}
             <span className="card__dot"></span>
-            {index < 4 ? <Movie /> : <Tv />}
-            {index < 4 ? "Movie" : "Series"}
+            {data.media_type == "tv" ? <Tv /> : <Movie />}
+            {data.media_type == "tv" ? "Tv" : "Movie"}
             <span className="card__dot"></span>
-            {index < 4 ? "4.9" : "2.3"}
+            {data.original_language.toUpperCase()}
+            <span className="card__dot"></span>
+            {data.vote_average}
           </p>
-          <h4 className="cursor-pointer text-3xl mt-3" onClick={detail}>
-            The Great Lands
+          <h4
+            className="cursor-pointer text-3xl mt-3"
+            onClick={() => detail(data.id, data.media_type)}
+          >
+            {title}
           </h4>
         </div>
       </div>

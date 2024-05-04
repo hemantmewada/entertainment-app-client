@@ -30,7 +30,9 @@
 
       & p {
         position: absolute;
-        transform: translateY(-3.75rem);
+        // transform: translateY(-3.75rem);// previous
+        transform: translateY(-5.0rem);// changed after
+        font-size: 12px; // added after
       }
     }
 

@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import ShowCards from "./ShowCards";
+import tmdb from "../hooks/tmdb";
+import { useDispatch, useSelector } from "react-redux";
+import { setBookmarks } from "../redux/state";
 
 // BookmarkedShows Component
 function BookmarkedShows() {
+  const { getBookmarked } = tmdb();
+  const dispatch = useDispatch();
+  const bookmarks = useSelector((state) => state.bookmarks);
+  useEffect(() => {
+    async function getBookmaredData() {
+      const data = await getBookmarked();
+      // console.log(data);
+      const filteredData = data.map((d) => d.bookmark);
+      dispatch(setBookmarks(filteredData));
+    }
+    getBookmaredData();
+  }, []);
   // JSX structure for rendering BookmarkedShows component
   return (
     <section className="show-grid">
@@ -14,7 +29,7 @@ function BookmarkedShows() {
 
       <div className="show-grid__shows">
         {/* ShowCards component displaying bookmarked shows */}
-        <ShowCards />
+        <ShowCards data={bookmarks} />
       </div>
 
       {/* Display login prompt if the user is not logged in */}

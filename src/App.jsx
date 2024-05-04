@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Layout from "./components/Layout";
 import Home from "./components/Home";
@@ -9,6 +10,7 @@ import BookmarkedShows from "./components/BookmarkedShows";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Detail from "./components/Detail";
+import SearchResults from "./components/SearchResults";
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/search/:params" element={<SearchResults />} />
           {/* Route for Movies */}
           <Route
             path="/movies"
@@ -40,6 +43,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>
+      <Toaster />
     </BrowserRouter>
   );
 }

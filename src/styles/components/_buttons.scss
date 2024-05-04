@@ -79,6 +79,7 @@
 
     &:hover {
       background-color: $pure-white;
+      color: #000; // added after
     }
   }
 
@@ -86,6 +87,7 @@
     background-color: $red;
     height: 4.8rem;
     transition: all $fade ease-in-out;
+    border-radius: 10px;// added after
 
     &:hover {
       background-color: $pure-white;
