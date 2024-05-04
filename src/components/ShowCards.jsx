@@ -82,7 +82,7 @@ function ShowCards({ data }) {
             {data.media_type == "tv" ? <Tv /> : <Movie />}
             {data.media_type == "tv" ? "Tv" : "Movie"}
             <span className="card__dot"></span>
-            {data.original_language.toUpperCase()}
+            {data.original_language?.toUpperCase()}
             <span className="card__dot"></span>
             {data.vote_average}
           </p>
