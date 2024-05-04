@@ -8,12 +8,16 @@ import { useNavigate } from "react-router-dom";
 import { dateFormat } from "../helpers/helpers";
 import tmdb from "../hooks/tmdb";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 // ShowCards Component
 function ShowCards({ data }) {
   const navigate = useNavigate();
   const bookmarks = useSelector((state) => state.bookmarks);
   const detail = (id, type) => {
+    if (!type) {
+      return toast.error("Sorry, detail not provided by TMDB.");
+    }
     navigate(`/${type}/${id}`);
   };
   const { addBookmark, removeBookmark } = tmdb();
@@ -30,7 +34,7 @@ function ShowCards({ data }) {
         ? dateFormat(data.first_air_date)
         : data.media_type == "movie"
         ? dateFormat(data.release_date)
-        : "";
+        : "2024-01-01";
 
     return (
       <div className="card card--show" key={index}>

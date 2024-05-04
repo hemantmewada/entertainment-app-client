@@ -160,7 +160,8 @@ const tmdb = () => {
   };
 
   const search = async (params) => {
-    const url = `https://api.themoviedb.org/3/search/movie?api_key=${config.VITE_TMDB_API_KEY}&query=${params}&page=1`;
+    // const url = `https://api.themoviedb.org/3/search/movie?api_key=${config.VITE_TMDB_API_KEY}&query=${params}&page=1`;
+    const url = `https://api.themoviedb.org/3/search/multi?api_key=${config.VITE_TMDB_API_KEY}&query=${params}`;
     try {
       const { data } = await axios.get(url, {
         headers: {
