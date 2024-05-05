@@ -14,7 +14,7 @@ function BookmarkedShows() {
     async function getBookmaredData() {
       const data = await getBookmarked();
       // console.log(data);
-      const filteredData = data.map((d) => d.bookmark);
+      const filteredData = data?.map((d) => d.bookmark);
       dispatch(setBookmarks(filteredData));
     }
     getBookmaredData();

@@ -27,7 +27,7 @@ function TrendingCards() {
   }, []);
 
   // Mapping over trending shows to render individual trending cards
-  const renderedCards = trendingData.map((data, index) => {
+  const renderedCards = trendingData?.map((data, index) => {
     const isBookmarked = Boolean(
       bookmarks?.find((bookmark) => bookmark.id == data.id)
     );

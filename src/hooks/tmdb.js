@@ -117,7 +117,7 @@ const tmdb = () => {
         toast.dismiss();
         toast.success(data.message);
         // return data.data;
-        const filteredData = data.data.map((d) => d.bookmark);
+        const filteredData = data?.data?.map((d) => d.bookmark);
         dispatch(setBookmarks(filteredData));
         // dispatch(changeBookmarkState());
         // getBookmarked();
